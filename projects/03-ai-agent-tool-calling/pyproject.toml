@@ -1,0 +1,191 @@
+# ============================================================
+# Pytest Configuration
+# ============================================================
+#
+# These settings control how pytest discovers and runs tests.
+#
+[tool.pytest.ini_options]
+
+# Directory where pytest should look for test files.
+#
+# Instead of searching the entire project,
+# pytest only searches inside the "tests" folder.
+#
+testpaths = ["tests"]
+
+# Add the current project directory to Python's module search path.
+#
+# This allows imports like:
+#
+# from app.agent import Agent
+#
+# instead of requiring:
+#
+# import sys
+# sys.path.append(...)
+#
+pythonpath = ["."]
+
+# Additional command-line options automatically used
+# every time pytest runs.
+#
+# -v
+#     Verbose output
+#
+# --cov=app
+#     Measure code coverage for the app package.
+#
+# --cov-report=term-missing
+#     Show coverage in the terminal and list
+#     lines that are NOT covered by tests.
+#
+addopts = "-v --cov=app --cov-report=term-missing"
+
+
+# ============================================================
+# Black Formatter Configuration
+# ============================================================
+#
+# Black automatically formats Python code
+# using a consistent style.
+#
+[tool.black]
+
+# Maximum line length.
+#
+# Black automatically wraps lines longer than 88 characters.
+#
+line-length = 88
+
+# Target Python version.
+#
+# Black formats code assuming
+# Python 3.14 syntax is available.
+#
+target-version = ["py314"]
+
+
+# ============================================================
+# Ruff Configuration
+# ============================================================
+#
+# Ruff is a very fast linter and code quality tool.
+#
+[tool.ruff]
+
+# Maximum allowed line length.
+#
+# Usually matches Black's setting.
+#
+line-length = 88
+
+# Target Python version.
+#
+# Ruff understands syntax available in Python 3.14.
+#
+target-version = "py314"
+
+
+# ============================================================
+# Ruff Lint Rules
+# ============================================================
+#
+# Select which categories of linting rules
+# Ruff should check.
+#
+[tool.ruff.lint]
+
+select = [
+
+    # E
+    #
+    # pycodestyle errors
+    #
+    # Examples:
+    #
+    # indentation
+    # whitespace
+    # formatting mistakes
+    #
+    "E",
+
+    # F
+    #
+    # Pyflakes
+    #
+    # Detects real programming mistakes.
+    #
+    # Examples:
+    #
+    # unused variables
+    # undefined names
+    # unused imports
+    #
+    "F",
+
+    # I
+    #
+    # Import sorting.
+    #
+    # Ensures imports are grouped and ordered
+    # consistently.
+    #
+    "I",
+
+    # B
+    #
+    # Bugbear rules.
+    #
+    # Finds common coding mistakes and
+    # suspicious patterns.
+    #
+    "B",
+
+    # UP
+    #
+    # Pyupgrade.
+    #
+    # Suggests newer, cleaner Python syntax.
+    #
+    # Example:
+    #
+    # list()
+    #
+    # may become
+    #
+    # []
+    #
+    "UP",
+]
+
+# Ignore no linting rules.
+#
+# Every selected rule will be enforced.
+#
+ignore = []
+
+
+# ============================================================
+# Ruff Import Sorting
+# ============================================================
+#
+# Configure Ruff's built-in import sorter.
+#
+[tool.ruff.lint.isort]
+
+# Tell Ruff that "app" is your own package.
+#
+# This helps Ruff separate imports into groups.
+#
+# Example:
+#
+# Standard library
+#     import json
+#
+# Third-party
+#     import pytest
+#
+# First-party
+#     from app.agent import Agent
+#
+known-first-party = ["app"]

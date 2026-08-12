@@ -1,0 +1,189 @@
+# Name displayed in the GitHub Actions page.
+#
+# Example:
+#
+# Actions
+#   └── Project 03 Tests
+#
+name: Project 03 Tests
+
+# ------------------------------------------------------------------
+# Events that trigger this workflow.
+# ------------------------------------------------------------------
+#
+on:
+
+  # Run whenever code is pushed.
+  push:
+
+    # Only run if files inside Project 03
+    # or this workflow file itself changed.
+    #
+    # This avoids running the workflow when
+    # unrelated projects are modified.
+    paths:
+      - "projects/03-ai-agent-tool-calling/**"
+      - ".github/workflows/project-03-tests.yml"
+
+  # Also run for Pull Requests.
+  pull_request:
+
+    # Again, only if Project 03 changed.
+    paths:
+      - "projects/03-ai-agent-tool-calling/**"
+
+
+# ------------------------------------------------------------------
+# Jobs
+# ------------------------------------------------------------------
+#
+# A workflow may contain multiple jobs.
+#
+# This workflow contains one job named "test".
+#
+jobs:
+
+  test:
+
+    # Run this job on GitHub's latest Ubuntu runner.
+    #
+    # GitHub automatically creates
+    # a fresh Linux virtual machine.
+    #
+    runs-on: ubuntu-latest
+
+    # Set the default working directory
+    # for every "run" command.
+    #
+    # Without this, every command would need:
+    #
+    # cd projects/03-ai-agent-tool-calling
+    #
+    defaults:
+      run:
+        working-directory: projects/03-ai-agent-tool-calling
+
+    # ------------------------------------------------------------------
+    # Steps executed in order.
+    # ------------------------------------------------------------------
+    #
+    steps:
+
+      # --------------------------------------------------------------
+      # Step 1
+      # --------------------------------------------------------------
+      #
+      # Download the repository contents
+      # into the GitHub runner.
+      #
+      - name: Check out repository
+
+        # Official GitHub Action.
+        uses: actions/checkout@v4
+
+
+      # --------------------------------------------------------------
+      # Step 2
+      # --------------------------------------------------------------
+      #
+      # Install Python.
+      #
+      - name: Set up Python
+
+        # Official Python setup action.
+        uses: actions/setup-python@v5
+
+        with:
+
+          # Install Python 3.14.
+          #
+          # This should match your project's
+          # supported Python version.
+          #
+          python-version: "3.14"
+
+
+      # --------------------------------------------------------------
+      # Step 3
+      # --------------------------------------------------------------
+      #
+      # Install project dependencies.
+      #
+      - name: Install dependencies
+
+        run: |
+
+          # Upgrade pip.
+          python -m pip install --upgrade pip
+
+          # Install every package listed
+          # in requirements.txt.
+          pip install -r requirements.txt
+
+
+      # --------------------------------------------------------------
+      # Step 4
+      # --------------------------------------------------------------
+      #
+      # Run Ruff.
+      #
+      # Checks:
+      #
+      # - unused imports
+      # - undefined variables
+      # - import ordering
+      # - style issues
+      # - modern Python syntax
+      #
+      - name: Run Ruff
+
+        run: ruff check app tests
+
+
+      # --------------------------------------------------------------
+      # Step 5
+      # --------------------------------------------------------------
+      #
+      # Verify code formatting.
+      #
+      # --check means:
+      #
+      # "Don't modify files.
+      # Simply fail if formatting is incorrect."
+      #
+      - name: Check Black formatting
+
+        run: black --check app tests
+
+
+      # --------------------------------------------------------------
+      # Step 6
+      # --------------------------------------------------------------
+      #
+      # Execute all unit tests.
+      #
+      - name: Run tests
+
+        # Environment variables available
+        # only during this step.
+        #
+        env:
+
+          # Fake API key.
+          #
+          # Unit tests never call OpenAI,
+          # but the client still requires
+          # an API key during initialization.
+          OPENAI_API_KEY: test-key
+
+          # Model name used during tests.
+          #
+          # Again, no API call is made.
+          OPENAI_MODEL: gpt-5.4-mini
+
+        # Run every pytest test.
+        #
+        # Pytest automatically discovers
+        # every test_* file.
+        #
+        run: pytest

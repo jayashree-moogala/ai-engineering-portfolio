@@ -1,0 +1,16 @@
+Acme Corporation Employee Handbook
+
+Working Hours
+Employees are expected to work from 9:00 AM to 5:00 PM, Monday through Friday.
+
+Vacation Policy
+Employees receive 20 days of paid vacation each year.
+
+Remote Work
+Employees may work remotely up to three days per week with manager approval.
+
+Code Reviews
+All production code must be reviewed by at least one other engineer before deployment.
+
+Software Development
+FastAPI is the preferred framework for building internal AI services.

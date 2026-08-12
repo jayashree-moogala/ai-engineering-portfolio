@@ -1,0 +1,138 @@
+PS C:\source\ai-engineering-portfolio\projects\02-enterprise-rag> (Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned) ; (& c:\source\ai-engineering-portfolio\projects\02-enterprise-rag\.venv\Scripts\Activate.ps1)
+(.venv) PS C:\source\ai-engineering-portfolio\projects\02-enterprise-rag> python -m tests.test_document_loader
+
+===== DOCUMENT LOADER TEST =====
+
+Documents loaded: 2
+
+Source : company_handbook.txt
+------------------------------------------------------------
+Acme Corporation Employee Handbook
+
+Working Hours
+Employees are expected to work from 9:00 AM to 5:00 PM, Monday through Friday.
+
+Vacation Policy
+Employees receive 20 days of paid vacation each year.
+
+Remote Work
+Employees may work remotely up to three days per week with manager approval.
+
+Code Reviews
+All production code must be reviewed by at least one other engineer before deployment.
+
+Software Development
+FastAPI is the preferred framework for building internal AI services.
+------------------------------------------------------------
+
+Source : test_file_2.txt
+------------------------------------------------------------
+test_file_2
+------------------------------------------------------------
+
+(.venv) PS C:\source\ai-engineering-portfolio\projects\02-enterprise-rag> python -m tests.test_chunker
+
+===== CHUNKER TEST =====
+
+Number of chunks: 6
+
+Chunk 1
+--------------------------------------------------
+Acme Corporation Employee Handbook
+--------------------------------------------------
+
+Chunk 2
+--------------------------------------------------
+Working Hours
+Employees are expected to work from 9:00 AM to 5:00 PM, Monday through Friday.
+--------------------------------------------------
+
+Chunk 3
+--------------------------------------------------
+Vacation Policy
+Employees receive 20 days of paid vacation each year.
+--------------------------------------------------
+
+Chunk 4
+--------------------------------------------------
+Remote Work
+Employees may work remotely up to three days per week with manager approval.
+--------------------------------------------------
+
+Chunk 5
+--------------------------------------------------
+Code Reviews
+All production code must be reviewed by at least one other engineer before deployment.
+--------------------------------------------------
+
+Chunk 6
+--------------------------------------------------
+Software Development
+FastAPI is the preferred framework for building internal AI services.
+--------------------------------------------------
+
+(.venv) PS C:\source\ai-engineering-portfolio\projects\02-enterprise-rag> python -m tests.test_embeddings
+==================================================
+EMBEDDINGS TEST
+==================================================
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 8509.39it/s]
+
+Number of embeddings: 3
+Embedding dimension: 384
+
+First 10 values of first embedding:
+[-0.07280944 -0.00586476 -0.10089824  0.00631845 -0.01082158 -0.10854431
+ -0.03275071 -0.02357724 -0.07936888 -0.06740254]
+(.venv) PS C:\source\ai-engineering-portfolio\projects\02-enterprise-rag> python -m tests.test_vector_store
+==================================================
+VECTOR STORE TEST
+==================================================
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 8593.18it/s]
+Loaded FAISS index from disk
+
+Index created successfully.
+Vectors stored: 63
+
+Top Matches:
+
+1. Score: 0.5018
+Vacation Policy
+Employees receive 20 days of paid vacation each year.
+------------------------------------------------------------
+2. Score: 0.5018
+Vacation Policy
+Employees receive 20 days of paid vacation each year.
+------------------------------------------------------------
+(.venv) PS C:\source\ai-engineering-portfolio\projects\02-enterprise-rag> python -m tests.test_retriever
+
+===== RETRIEVER TEST =====
+
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 8207.88it/s]
+Loaded FAISS index from disk
+FAISS index saved to disk
+Loading weights: 100%|████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 8151.81it/s]
+Query: How many vacation days do employees get?
+
+Top Matches:
+
+1. {'text': 'Vacation Policy\nEmployees receive 20 days of paid vacation each year.', 'score': 0.5017831921577454}
+2. {'text': 'Vacation Policy\nEmployees receive 20 days of paid vacation each year.', 'score': 0.5017831921577454}
+3. {'text': 'Vacation Policy\nEmployees receive 20 days of paid vacation each year.', 'score': 0.5017831921577454}
+(.venv) PS C:\source\ai-engineering-portfolio\projects\02-enterprise-rag> python -m tests.test_rag_service
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 8585.32it/s]
+Loaded FAISS index from disk
+FAISS index saved to disk
+Loading weights: 100%|████████████████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 8037.46it/s]
+
+===== RAG FINAL TEST =====
+
+Q: How many vacation days do employees get?
+
+A:
+
+{'answer': 'Employees get **20 days of paid vacation each year**.', 'sources': [{'text': 'Vacation Policy\nEmployees receive 20 days of paid vacation each year.', 'score': 0.5017831921577454}, {'text': 'Vacation Policy\nEmployees receive 20 days of paid vacation each year.', 'score': 0.5017831921577454}, {'text': 'Vacation Policy\nEmployees receive 20 days of paid vacation each year.', 'score': 0.5017831921577454}]}
+(.venv) PS C:\source\ai-engineering-portfolio\projects\02-enterprise-rag> 
